@@ -25,16 +25,6 @@ class environment():
         V.col = col
         self.vacuum = V
 
-    # prints the environment as not <python_object> and places vacuum visually without overriding data
-    def draw_environment(self):
-        for row in range(4):
-            for col in range(4):
-                if row == self.vacuum.row and col == self.vacuum.col:
-                    print("\033[31mV\033[0m",end=" ") # the weird text is to make it red to make it easier to see
-                else:
-                    print(self.env[row][col], end = " ")
-            print() # newline
-
     # shows perceptible squares from where the vacuum is
     def get_valid_states(self, V):
         row = V.row
@@ -73,31 +63,3 @@ class environment():
             V.col += 1
         else:
             pass
-
-# main statement just to prove that it works 
-if __name__ == "__main__":
-
-    living_costs = [-0.05, -2, 2]
-    # living_costs = [-0.05]
-    for cost in living_costs:
-        time.sleep(4)
-        env = environment()
-        env.set_MDP_env()
-        print("Cost:", cost)
-        V = MDPAgent(env, cost)
-        print_table(V.mdp.to_arrows(V.policy))
-
-        env.insert_vacuum(V, 0,3)
-
-        for i in range(15): #arbitrary max number of steps to not have it run forever
-            action = V.choose_move(env)
-            env.draw_environment()
-            time.sleep(1)
-            print("_______________")
-            if action is None:
-                print("reached end")
-                print()
-                break
-            
-            env.move(V,action)
-
